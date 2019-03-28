@@ -11,6 +11,7 @@ import { parseStringToDate } from "./components/utils";
 
 const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/dd/YYYY"}) => {
 	const [pickerDisplay, setPickerDisplay] = useState("none")
+	const [dateError, setDateError] = useState("")
 	const wrapperRef = useRef(null);
 
 	useEffect(()=>{
@@ -27,7 +28,7 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 	}
 	
 	return (
-		<div className="date-time-container" >
+		<div className="date-time-container" ref={wrapperRef}>
 			<div className="text-input-container" key={date}>
 				<input
 					type="text"
@@ -36,24 +37,42 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 					defaultValue={date ? format(date, dateFormat, { awareOfUnicodeTokens: true }) : ""}
 					onBlur={
 						(e)=>{
-							onChange(parseStringToDate(e.target.value))
+							let date = parseStringToDate(e.target.value)
+							if (date instanceof Date && !isNaN(date)) {
+								onChange(parseStringToDate(e.target.value))
+							}
+							else {
+								setDateError("Invalid date")
+								setPickerDisplay("none")
+							}
+						}
+					}
+					onKeyDown= {
+						(e) => {
+							if (e.key === 'Tab') {
+								setPickerDisplay("none")
+							}
 						}
 					}
 				/>
 			</div>
-			<div ref={wrapperRef}>
-				<Calendar 
-					pickerDisplay={pickerDisplay} 
-					date={date} 
-					locale={locale} 
-					onDateClick={
-						(date) => {
-							setPickerDisplay("none")
-							onChange(date)
-						}
+			{
+				dateError && 
+				<div className="label-error">
+					<span>{dateError}</span>
+				</div>
+			}
+			<Calendar 
+				pickerDisplay={pickerDisplay} 
+				date={date} 
+				locale={locale} 
+				onDateClick={
+					(date) => {
+						setPickerDisplay("none")
+						onChange(date)
 					}
-				/>
-			</div>
+				}
+			/>
 		</div>
 	);
 }

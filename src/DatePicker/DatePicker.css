@@ -134,3 +134,11 @@
 .date-time-container .days-container .grayed-out {
   color: #babcbc;
 }
+
+.label-error {
+  background-color: #E54D41;
+  color: #FFFFFF;
+  margin: 8px 0;
+  padding: 4px 18px;
+  font-size: 14px;
+}

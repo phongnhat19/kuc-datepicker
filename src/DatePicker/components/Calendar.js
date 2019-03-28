@@ -15,9 +15,12 @@ const Calendar = ({
 	const weekDayLabels = getWeekDayLabels(locale);
 	const [displayDate, setDisplayDate] = useState(date);
 	const displayingDays = getDisplayingDays(displayDate);
-	
 	if (!date) {
 		date = new Date()
+	}
+
+	if (!isSameDate(date, displayDate)) {
+		setDisplayDate(date)
 	}
 
 	return (

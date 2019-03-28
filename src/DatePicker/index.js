@@ -7,6 +7,7 @@ import {
 import Calendar from './components/Calendar'
 
 import "./DatePicker.css";
+import { parseStringToDate } from "./components/utils";
 
 const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/dd/YYYY"}) => {
 	const [pickerDisplay, setPickerDisplay] = useState("none")
@@ -24,7 +25,7 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 			setPickerDisplay('none')
 		}
 	}
-
+	
 	return (
 		<div className="date-time-container" >
 			<div className="text-input-container" key={date}>
@@ -33,6 +34,11 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 					className="text-input"
 					onFocus={() => setPickerDisplay("block")}
 					defaultValue={date ? format(date, dateFormat, { awareOfUnicodeTokens: true }) : ""}
+					onBlur={
+						(e)=>{
+							onChange(parseStringToDate(e.target.value))
+						}
+					}
 				/>
 			</div>
 			<div ref={wrapperRef}>

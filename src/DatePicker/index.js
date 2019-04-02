@@ -32,7 +32,7 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = en, dateFormat="MM/dd/
 					type="text"
 					className="text-input"
 					onFocus={() => setPickerDisplay("block")}
-					defaultValue={date ? format(date, dateFormat, { awareOfUnicodeTokens: true }) : ""}
+					defaultValue={date ? format(date, dateFormat) : ""}
 					onBlur={
 						(e)=>{
 							setDateError("")

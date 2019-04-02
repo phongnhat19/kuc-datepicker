@@ -1,27 +1,8 @@
+import en from './localizationData/en'
+import cn from './localizationData/cn'
+import jp from './localizationData/jp'
+
 const seperators = ["/", "-", " "]
-const en = {
-    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    weekDay: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    weekDayShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    weekDayMedium: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-} 
-
-const cn = {
-    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    weekDay: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    weekDayShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    weekDayMedium: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-}
-
-const jp = {
-    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    weekDay: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    weekDayShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    weekDayMedium: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-}
 
 const getSeperator = (dateFormatString) => {
     let seperator = ""
@@ -55,6 +36,9 @@ const getDateData = (dateObj, dateCode, locale) => {
             return locale.monthNames[dateObj.month]
         case 'YYYY':
             return `${dateObj.year}`
+        case 'calendartitle':
+            if (locale.name === 'jp' || locale.name === 'cn') return `${dateObj.year}年${dateObj.month+1}月`
+            return `${locale.monthNames[dateObj.month]} ${dateObj.year}`
         default:
             break;
     }
@@ -71,6 +55,9 @@ const format = (dirtyDate, dateFormat, option = {}) => {
             day: dirtyDate.getDay(),
             month: dirtyDate.getMonth(),
             year: dirtyDate.getFullYear()
+        }
+        if (dateFormat === 'calendartitle') {
+            return getDateData(dateObj, 'calendartitle', option.locale)
         }
         let seperator = getSeperator(dateFormat)
         let formattedDate = dateFormat.split(seperator)

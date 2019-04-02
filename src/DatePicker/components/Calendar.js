@@ -30,7 +30,7 @@ const Calendar = ({
 						setDisplayDate(newDate)
 					}} />
 					<span className="label">
-						{format(displayDate, "MMMM YYYY", {
+						{format(displayDate, "calendartitle", {
 							locale: locale
 						})}
 					</span>
@@ -73,8 +73,8 @@ const Calendar = ({
 				})}
 				</div>
 				<div className="quick-selections-container">
-					<span className="today" onClick={()=>{setDisplayDate(new Date());onDateClick(today)}}>Today</span>
-					<span className="none" onClick={()=>{onDateClick(null)}}>None</span>
+					<span className="today" onClick={()=>{setDisplayDate(new Date());onDateClick(today)}}>{locale.today}</span>
+					<span className="none" onClick={()=>{onDateClick(null)}}>{locale.none}</span>
 				</div>
 			</div>
 		</div>

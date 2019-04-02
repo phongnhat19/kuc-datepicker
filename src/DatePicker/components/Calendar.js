@@ -1,26 +1,20 @@
 import React, { useState } from 'react'
 import {getWeekDayLabels, getDisplayingDays, isSameMonth, isToday, isSameDate} from './utils'
-import { enUS } from "date-fns/esm/locale";
-import {
-	format
-} from "date-fns/esm";
+import {en} from './Locale'
+import {format} from './Locale'
 
 const Calendar = ({
 	date,
-	locale = enUS, 
+	locale = en, 
 	pickerDisplay = 'block',
 	onDateClick=(date)=> {},
 }) => {
 	const today = new Date();
 	const weekDayLabels = getWeekDayLabels(locale);
-	const [displayDate, setDisplayDate] = useState(date);
+	const [displayDate, setDisplayDate] = useState(new Date(date));
 	const displayingDays = getDisplayingDays(displayDate);
 	if (!date) {
 		date = new Date()
-	}
-
-	if (!isSameDate(date, displayDate)) {
-		setDisplayDate(date)
 	}
 
 	return (
@@ -31,16 +25,19 @@ const Calendar = ({
 			<div className="header">
 				<div className="month-year-container">
 					<span className="prev" onClick={()=>{
-						setDisplayDate(new Date(displayDate.setMonth(displayDate.getMonth()-1,1)))
+						let newDate = new Date(displayDate)
+						newDate.setMonth(newDate.getMonth()-1,1)
+						setDisplayDate(newDate)
 					}} />
 					<span className="label">
 						{format(displayDate, "MMMM YYYY", {
-							awareOfUnicodeTokens: true,
 							locale: locale
 						})}
 					</span>
 					<span className="next" onClick={()=>{
-						setDisplayDate(new Date(displayDate.setMonth(displayDate.getMonth()+1,1)))
+						let newDate = new Date(displayDate)
+						newDate.setMonth(newDate.getMonth()+1,1)
+						setDisplayDate(newDate)
 					}} />
 				</div>
 				<div className="days-container">
@@ -65,14 +62,18 @@ const Calendar = ({
 					className += isSameDate(day, date) ? " selected" : "";
 
 					return (
-						<span className={className} key={`day-${index}`} onClick={()=>{onDateClick(day)}}>
+						<span className={className} key={`day-${index}`} onClick={()=>{
+							setDisplayDate(new Date(day))
+							onDateClick(day)}
+							}
+						>
 							{format(day, "d")}
 						</span>
 					);
 				})}
 				</div>
 				<div className="quick-selections-container">
-					<span className="today" onClick={()=>{onDateClick(today)}}>Today</span>
+					<span className="today" onClick={()=>{setDisplayDate(new Date());onDateClick(today)}}>Today</span>
 					<span className="none" onClick={()=>{onDateClick(null)}}>None</span>
 				</div>
 			</div>

@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { enUS } from "date-fns/esm/locale";
-import {
-  format
-} from "date-fns/esm";
+import {en} from './components/Locale'
+import {format} from './components/Locale'
 
 import Calendar from './components/Calendar'
 
 import "./DatePicker.css";
 import { parseStringToDate } from "./components/utils";
 
-const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/dd/YYYY"}) => {
+const DatePicker = ({date, onChange=(date)=> {} ,locale = en, dateFormat="MM/dd/YYYY"}) => {
 	const [pickerDisplay, setPickerDisplay] = useState("none")
 	const [dateError, setDateError] = useState("")
 	const wrapperRef = useRef(null);
@@ -37,11 +35,12 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 					defaultValue={date ? format(date, dateFormat, { awareOfUnicodeTokens: true }) : ""}
 					onBlur={
 						(e)=>{
+							setDateError("")
 							let date = parseStringToDate(e.target.value)
 							if (date instanceof Date && !isNaN(date)) {
 								onChange(parseStringToDate(e.target.value))
 							}
-							else {
+							else if (e.target.value) {
 								setDateError("Invalid date")
 								setPickerDisplay("none")
 							}
@@ -68,8 +67,8 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 				locale={locale} 
 				onDateClick={
 					(date) => {
-						setPickerDisplay("none")
 						onChange(date)
+						setPickerDisplay("none")
 					}
 				}
 			/>
@@ -78,3 +77,7 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = enUS, dateFormat="MM/d
 }
 
 export default DatePicker;
+export {
+	Calendar
+}
+export * from './components/Locale'

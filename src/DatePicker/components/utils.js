@@ -3,9 +3,10 @@ import {
     endOfMonth,
     startOfWeek,
     endOfWeek,
-    eachDayOfInterval,
-    format
+    eachDayOfInterval
+    //format
 } from "date-fns/esm";
+import {format} from './Locale'
 const getWeekDays = (date) => {
     const startDayOfWeek = startOfWeek(date);
     const endDayOfWeek = endOfWeek(date);

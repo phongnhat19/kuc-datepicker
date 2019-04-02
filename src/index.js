@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import DatePicker from "./DatePicker";
+import {cn} from './DatePicker'
 
 import "./styles.css";
 
@@ -17,7 +18,7 @@ class App extends React.Component {
   render(){
     return (
       <div className="App">
-        <DatePicker date={this.state.date} onChange={this.onChange}/>
+        <DatePicker date={this.state.date} onChange={this.onChange} locale={cn}/>
       </div>
     );
   }

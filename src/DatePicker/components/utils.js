@@ -1,21 +1,14 @@
-import {
-    startOfMonth,
-    endOfMonth,
-    startOfWeek,
-    endOfWeek,
-    eachDayOfInterval
-    //format
-} from "date-fns/esm";
 import {format} from './Locale'
 const getWeekDays = (date) => {
-    const startDayOfWeek = startOfWeek(date);
-    const endDayOfWeek = endOfWeek(date);
-    const eachDayOfWeek = eachDayOfInterval({
-        start: startDayOfWeek,
-        end: endDayOfWeek
-    });
-  
-    return eachDayOfWeek;
+    let startDate = new Date(date)
+    startDate.setDate(startDate.getDate()-startDate.getDay())
+    let result = [startDate]
+    for (let index = 1; index < 6; index++) {
+        let tempDate = new Date(result[index-1])
+        tempDate.setDate(tempDate.getDate()+1)
+        result.push(tempDate)
+    }
+    return result;
   }
   
 const getWeekDayLabels = (locale) => {
@@ -29,16 +22,20 @@ const getWeekDayLabels = (locale) => {
 }
 
 const getDisplayingDays = (date) => {
-    const startDayOfMonth = startOfMonth(date);
-    const endDayOfMonth = endOfMonth(date);
+    let startDayOfMonth = new Date(date)
+    startDayOfMonth.setDate(1)
+    let endDayOfMonth = new Date(date)
+    endDayOfMonth.setMonth(endDayOfMonth.getMonth()+1,0)
   
-    const startDayOfFirstWeek = startOfWeek(startDayOfMonth);
-    const endDayOfEndWeek = endOfWeek(endDayOfMonth);
-  
-    const days = eachDayOfInterval({
-        start: startDayOfFirstWeek,
-        end: endDayOfEndWeek
-    });
+    let startDayOfFirstWeek = new Date(startDayOfMonth);
+    startDayOfFirstWeek.setDate(startDayOfFirstWeek.getDate()-startDayOfFirstWeek.getDay())
+    let endDayOfEndWeek = new Date(endDayOfMonth);
+    endDayOfEndWeek.setDate(endDayOfEndWeek.getDate() + (6-endDayOfEndWeek.getDay()) )
+
+    let days = []
+    for (var d = new Date(startDayOfFirstWeek); d <= endDayOfEndWeek; d.setDate(d.getDate() + 1)) {
+        days.push(new Date(d));
+    }
   
     return days;
 }

@@ -24,7 +24,7 @@ const Calendar = ({
 		>
 			<div className="header">
 				<div className="month-year-container">
-					<span className="prev" onClick={()=>{
+					<button className="prev calendar-button-control" onClick={()=>{
 						let newDate = new Date(displayDate)
 						newDate.setMonth(newDate.getMonth()-1,1)
 						setDisplayDate(newDate)
@@ -34,7 +34,7 @@ const Calendar = ({
 							locale: locale
 						})}
 					</span>
-					<span className="next" onClick={()=>{
+					<button className="next calendar-button-control" onClick={()=>{
 						let newDate = new Date(displayDate)
 						newDate.setMonth(newDate.getMonth()+1,1)
 						setDisplayDate(newDate)
@@ -60,21 +60,24 @@ const Calendar = ({
 					className += isSameMonth(day, displayDate) ? "" : " grayed-out";
 					className += isToday(day) ? " today" : "";
 					className += isSameDate(day, date) ? " selected" : "";
-
 					return (
-						<span className={className} key={`day-${index}`} onClick={()=>{
+						<button className={`${className} calendar-button`} key={`day-${index}`} onClick={()=>{
+							
+							let returnDate = new Date(date)
+							returnDate.setFullYear(day.getFullYear(), day.getMonth(), day.getDate())
+							
+							onDateClick(returnDate)
 							setDisplayDate(new Date(day))
-							onDateClick(day)}
-							}
+						}}
 						>
 							{format(day, "d")}
-						</span>
+						</button>
 					);
 				})}
 				</div>
 				<div className="quick-selections-container">
-					<span className="today" onClick={()=>{setDisplayDate(new Date());onDateClick(today)}}>{locale.today}</span>
-					<span className="none" onClick={()=>{onDateClick(null)}}>{locale.none}</span>
+					<button className="today calendar-button" onClick={()=>{setDisplayDate(new Date());onDateClick(today)}}>{locale.today}</button>
+					<button className="none calendar-button" onClick={()=>{onDateClick(null)}}>{locale.none}</button>
 				</div>
 			</div>
 		</div>

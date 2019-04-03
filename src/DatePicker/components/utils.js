@@ -3,7 +3,7 @@ const getWeekDays = (date) => {
     let startDate = new Date(date)
     startDate.setDate(startDate.getDate()-startDate.getDay())
     let result = [startDate]
-    for (let index = 1; index < 6; index++) {
+    for (let index = 1; index < 7; index++) {
         let tempDate = new Date(result[index-1])
         tempDate.setDate(tempDate.getDate()+1)
         result.push(tempDate)
@@ -53,6 +53,17 @@ const parseStringToDate = (dateString) => {
     return new Date(dateData.year, dateData.month, dateData.date)
 }
 
+const parseStringToTime = (timeString) => {
+    let timeData = {
+        hour: parseInt(timeString.split(":")[0],10),
+        minute: parseInt(timeString.split(":")[1],10)
+    }
+    let result = new Date()
+    result.setHours(timeData.hour)
+    result.setMinutes(timeData.minute)
+    return result
+}
+
 export {
     getWeekDays,
     getWeekDayLabels,
@@ -60,5 +71,6 @@ export {
     isSameMonth,
     isToday,
     isSameDate,
-    parseStringToDate
+    parseStringToDate,
+    parseStringToTime
 }

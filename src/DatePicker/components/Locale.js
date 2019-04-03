@@ -2,7 +2,7 @@ import en from './localizationData/en'
 import cn from './localizationData/cn'
 import jp from './localizationData/jp'
 
-const seperators = ["/", "-", " "]
+const seperators = ["/", "-", " ", ":"]
 
 const getSeperator = (dateFormatString) => {
     let seperator = ""
@@ -36,6 +36,16 @@ const getDateData = (dateObj, dateCode, locale) => {
             return locale.monthNames[dateObj.month]
         case 'YYYY':
             return `${dateObj.year}`
+        case 'HH':
+            if (dateObj.hour < 10) return `0${dateObj.hour}`
+            return `${dateObj.hour}`
+        case 'H':
+            return `${dateObj.hour}`
+        case 'mm':
+            if (dateObj.minute < 10) return `0${dateObj.minute}`
+            return `${dateObj.minute}`
+        case 'm':
+            return `${dateObj.minute}`
         case 'calendartitle':
             if (locale.name === 'jp' || locale.name === 'cn') return `${dateObj.year}年${dateObj.month+1}月`
             return `${locale.monthNames[dateObj.month]} ${dateObj.year}`

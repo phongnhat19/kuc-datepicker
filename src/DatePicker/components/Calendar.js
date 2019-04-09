@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {getWeekDayLabels, getDisplayingDays, isSameMonth, isToday, isSameDate} from './utils'
 import {en} from './Locale'
 import {format} from './Locale'
+
+let previousDate
 
 const Calendar = ({
 	date,
@@ -16,6 +18,19 @@ const Calendar = ({
 	if (!date) {
 		date = new Date()
 	}
+
+	if (!previousDate) {
+		previousDate = new Date(date)
+	}
+
+	useEffect(()=>{
+		if (date) {
+			if (!isSameDate(date,previousDate)) {
+				setDisplayDate(new Date(date))
+				previousDate = new Date(date)
+			}
+		}
+	})
 
 	return (
 		<div

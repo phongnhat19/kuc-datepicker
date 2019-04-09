@@ -23,8 +23,9 @@ const DatePicker = ({date, onChange=(date)=> {} ,locale = en, dateFormat="MM/dd/
 	})
 
 	const handleClickOutside = (event) => {
-		if (wrapperRef && !wrapperRef.current.contains(event.target) && pickerDisplay === 'block') {
+		if (wrapperRef && !wrapperRef.current.contains(event.target) && (pickerDisplay !== 'none' || timePickerDisplay !== 'none' )) {
 			setPickerDisplay('none')
+			setTimePickerDisplay('none')
 		}
 	}
 	return (
